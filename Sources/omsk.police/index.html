@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+	<title>Безопасный Омск</title>
+	<meta charset="utf-8" />
+	<meta name = "viewport" content = "width=device-width, maximum-scale = 1, minimum-scale=1" />
+	<link rel="stylesheet" type="text/css" href="css/default.css" media="all" />
+	<link rel="stylesheet" href="css/flexslider.css" type="text/css" />
+	<link rel="stylesheet" href="css/fixed-navigation.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css' />
+	
+    <script src="js/groups.js" type="text/javascript"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="js/jquery.flexslider.js"></script>
+	<script src="js/default.js"></script>
+    <script src="http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU" type="text/javascript"></script>
+
+
+    <script src="data/mapdata1.js"></script>
+
+	<script type="text/javascript">
+      var myMap;
+
+	  function initialize() {
+	      ymaps.ready(initMap);
+	  }
+
+	  function getData(attitude, lattitude) {
+
+	      var script = document.createElement('script');
+	      script.type = 'text/javascript';
+	      script.src = 'http://bcwddata.azurewebsites.net/GetData.aspx?a=' + attitude + '&l=' + lattitude;
+	      document.getElementsByTagName('head')[0].appendChild(script);
+
+	  }
+
+
+	  function initMap() {
+	      myMap = new ymaps.Map('map', {
+	          center: [54.977271, 73.38665],
+	          zoom: 12,
+	          type: 'yandex#hybrid',
+	          behaviors: ['default', 'scrollZoom']
+	      });
+
+	      myMap.events.add('click', function (e) {
+
+	          var coords = e.get('coordPosition');
+
+	          getData(coords[0].toPrecision(6), coords[1].toPrecision(6));
+	      });
+
+	      myMap.events.add('contextmenu', function (e) {
+	          myMap.hint.show(e.get('coordPosition'), 'Кто-то щелкнул правой кнопкой');
+	      });
+
+	      myMap.controls
+                  // Кнопка изменения масштаба.
+                  .add('zoomControl', { left: 5, top: 5 })
+                  // Список типов карты
+                  .add('typeSelector')
+                  // Стандартный набор кнопок
+                  .add('mapTools', { left: 35, top: 5 });
+
+	      var myCollection = loadDataMap();
+          
+	      myCollection.each(function (obj) {
+	          obj.events.add('click', function (e) {
+	              var coords = e.get('coordPosition');
+
+	              getData(coords[0].toPrecision(6), coords[1].toPrecision(6));
+	          });
+
+	      });
+
+	      myMap.geoObjects.add(myCollection);
+
+	  }
+
+	</script>
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<script src="js/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body onload="initialize()">
+	<div id="pagewidth">
+		<header id="header">
+			<div class="center">
+				<nav id="mainNav">
+					<ul>
+						<li class="active"><a href="#pagewidth"><span>Карта</span></a></li>
+						<li><a href="#boxes"><span>Разыскиваются</span></a></li>
+						<!--<li><a href="#twoColumnLayout"><span>Происшествия</span></a></li>-->
+						<li><a href="#threeColumnLayout"><span>Происшествия</span></a></li>
+						<!--<li><a href="#testiomonialsTab"><span>testimonials</span></a></li>-->
+						<li><a href="#contactUs"><span>О проекте</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+		<div id="content">
+			<section class="row">
+				<div class="center">
+					<!--<h1>Карта цен недвижимости в Омске</h1>-->
+					<!--<strong class="subHeading">правдивая инфографика</strong>-->
+					<div id="map" style="height:750px">
+
+					</div>
+				</div>
+			</section>
+			<section id="boxes" class="row grey">
+				<div class="center">
+					<h1>Опасные люди</h1>
+					<strong class="subHeading">если вы их встретите - лучше позвоните по 02</strong>
+					<div class="columns">
+						<article class="news oneThird">
+							<div>
+								<h3><a href="#">Иванов Дмитрий Игоревич 1987 г.р.</a></h3>
+								<div class="content">
+									<a href="#" class="imgHolder fullWidth"><img src="http://55.mvd.ru/upload/site57/4Yg8xPIGjd.jpg" alt="" /></a>
+									<p>Следственным отделом по расследованию преступлений в сфере экономики следственного управления по городу Омску разыскивается Иванов Дмитрий Игоревич, 1987 г.р., который подозревается в совершении особо тяжкого преступления в сфере высоких технологий.</p>
+									<p>Следствием установлено, что в период с 21.09.2011 по 11.03.2012 Иванов Дмитрий Игоревич приобрел и оформил на подставных лиц сим-карты, после чего отправлял по сети Интернет короткие смс-сообщения на платные четырехзначные номера контент-провайдеров и получал коды доступа для скачивания своих файлов.
+                                        В результате незаконного использования ресурсов сотовых операторов, Иванов Д.И. совершил хищение денежных средств в особо крупном размере. Ущерб составил более 2 000 000 рублей. В соответствии с уголовным кодексом РФ, ответственность за содеянное деяние предусмотрена в виде лишения свободы на срок до 10 лет.</p>
+								</div>
+								<div class="readMore"><a href="#" class="btn btnSmall"><span>Read More</span></a></div>
+							</div>
+						</article>
+						<article class="news oneThird">
+							<div>
+								<h3><a href="#">Андреев Валерий Николаевич, 1957 г.р.</a></h3>
+								<div class="content">
+									<a href="#" class="imgHolder fullWidth"><img src="http://55.mvd.ru/upload/site57/Ks9jI5uacX.jpg" alt="" /></a>
+									<p>Разыскивается УМВД России по Оренбургской области за совершение тяжких преступлений.</p>
+									<p>Приметы разыскиваемого: рост 173 см, возраст 55 лет, лицо овальное, волосы прямые тёмные с проседью, губы  тонкие, подбородок прямой, ушные раковины прилегающие.
+                                        Особые приметы: на верхней челюсти слева и справа с 1 по 4 зубы имели коронку жёлтого металла, на нижней челюсти слева и справа с 5 по 7 зубы имели коронку из жёлтого металла.</p>
+								</div>
+								<div class="readMore"><a href="#" class="btn btnSmall"><span>Read More</span></a></div>
+							</div>
+						</article>
+						<article class="news oneThird">
+							<div>
+								<h3><a href="#">Дробязкин Иван Станиславович, 1972 г.р.</a></h3>
+								<div class="content">
+									<a href="#" class="imgHolder fullWidth"><img src="http://55.mvd.ru/upload/site57/G4274Sb0AX.jpg" alt="" /></a>
+									<p>Причина розыска: по подозрению в совершении преступления.</p>
+									<p>Фабула: 29.10.2012 года совершил преступление,   предусмотренное ч. 4 ст. 111 УК РФ.
+                                         Приметы: на вид 38-40 лет, рост 168см, среднего  телосложения, волосы светло-рыжие, имеется  теменная залысина.
+                                         Особенности речи: заикается.
+                                         Был одет: пуховик «Аляска» черного цвета,  камуфляжный капюшон, синие джинсы, ботинки  черные зимние.</p>
+								</div>
+								<div class="readMore"><a href="#" class="btn btnSmall"><span>Read More</span></a></div>
+							</div>
+						</article>
+					</div>
+				</div>
+			</section>
+			<section id="threeColumnLayout" class="row">
+				<div class="center">
+					<h1>Хроника происшествий</h1>
+                    <strong class="subHeading">Все что случилось в Омске за последнее время</strong>
+
+				    <div class="center">
+
+                        <script language="JavaScript" src="http://feed2js.org//feed2js.php?src=http%3A%2F%2Ftvoiomsk.ru%2Frss.xml&chan=y&num=15&au=y&date=y&utf=y&pc=y&html=a"  charset="UTF-8" type="text/javascript"></script>
+
+                        <noscript>
+                        <a href="http://feed2js.org//feed2js.php?src=http%3A%2F%2Ftvoiomsk.ru%2Frss.xml&chan=y&num=15&au=y&date=y&utf=y&pc=y&html=y">View RSS feed</a>
+                        </noscript>
+
+
+				    </div>
+
+				</div>
+			</section>
+			<section id="contactUs" class="row grey">
+				<div class="center">
+					<h1>О проекте</h1>
+					<strong class="subHeading">Планируете безопасно прогуляться по Омску вечерком ? <br/> 
+                                               Может выбираете место, где спокойно можно пожить ? <br/>
+                                               <a href="#">Посмотрите</a>, взможно Вам будет интересно !
+					</strong>
+
+					<div class="columns">
+						<div class="center">
+							<p>Вся информация берется из открытых источников</p>
+						</div>
+					</div>
+				</div>
+
+                <script type="text/javascript"><!--
+                    google_ad_client = "ca-pub-5444837590420556";
+                    /* 1 */
+                    google_ad_slot = "3276112693";
+                    google_ad_width = 970;
+                    google_ad_height = 90;
+                    //-->
+                </script>
+                <script type="text/javascript"
+                src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+                </script>
+
+			</section>
+		</div>
+		<footer id="footer">
+			<div class="center">
+				<span class="copy">Created by BCWD</span>
+			</div>
+		</footer>
+	</div>
+
+
+
+</body>
+</html>
